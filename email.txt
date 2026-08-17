@@ -1,0 +1,15 @@
+Dear Hiring Team,
+
+Our AI screening engine has just identified a high-potential candidate for the Senior Full-Stack Engineer position.
+
+Candidate Overview:  
+Name: {{ $json.name }}  
+Experience: {{ $json.experience }} Years  
+Match Score: {{ $json.score }}%  
+Core Tech Stack: {{ Array.isArray($json.skills) ? $json.skills.join(', ') : $json.skills }}  
+AI Analysis Summary: {{ $json.summary }}  
+
+The candidate's profile has been successfully synced to our Supabase talent database. Please review the full credentials and schedule an initial screening if applicable.  
+
+Best Regards,  
+TalentAI Automation System Powered by Aipect International

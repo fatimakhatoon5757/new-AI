@@ -1,0 +1,14 @@
+{
+  "@parcel/watcher": true,
+  "isolated-vm": true,
+  "sqlite3": true,
+  "agent-browser": true,
+  "oracledb": true,
+  "protobufjs": true,
+  "msgpackr-extract": true,
+  "ssh2": true,
+  "@sentry/node-native-stacktrace": true,
+  "@sentry/node-cpu-profiler": true,
+  "cpu-features": true,
+  "@scarf/scarf": true
+}

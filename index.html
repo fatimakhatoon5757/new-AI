@@ -1,1 +1,195 @@
+<!DOCTYPE html>
+<html lang="en">
 
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>TalentAI | Enterprise Resume Intelligence</title>
+    <script src="https://cdn.tailwindcss.com"></script>
+    <link href="https://fonts.googleapis.com/css2?family=Inter:wght@300;400;500;600;700&display=swap" rel="stylesheet">
+    <script src="https://unpkg.com/lucide@latest"></script>
+    <link rel="stylesheet" href="./style.css">
+</head>
+
+<body class="bg-[#09090b] text-zinc-400 antialiased selection:bg-blue-500/30 min-h-screen flex flex-col">
+
+    <!-- Header Navigation -->
+    <nav
+        class="border-b border-zinc-800 px-8 py-4 flex justify-between items-center bg-[#09090b]/80 backdrop-blur-md sticky top-0 z-50">
+        <div class="flex items-center gap-2">
+            <div class="w-8 h-8 bg-blue-600 rounded flex items-center justify-center">
+                <i data-lucide="shield-check" class="text-white w-5 h-5"></i>
+            </div>
+            <span class="text-white font-semibold tracking-tight text-lg italic">Aipect International <span
+                    class="text-blue-500">TalentAI</span></span>
+        </div>
+        <div class="flex items-center gap-6 text-sm font-medium">
+            <span
+                class="px-2 py-1 bg-zinc-900 border border-zinc-800 rounded text-[10px] text-zinc-500 uppercase tracking-widest">Enterprise
+                v2.1</span>
+            <div class="h-4 w-px bg-zinc-800"></div>
+            <a href="#" class="text-zinc-300 hover:text-white transition-colors">Documentation</a>
+        </div>
+    </nav>
+
+    <!-- Main Content Container -->
+    <main class="max-w-4xl mx-auto mt-16 px-6 pb-20 flex-grow w-full">
+        <div class="mb-12 text-center md:text-left">
+            <h2 class="text-4xl font-bold text-white mb-4 tracking-tight">AI-Powered Candidate Screening</h2>
+            <p class="text-zinc-400 text-lg max-w-2xl leading-relaxed">
+                Leverage GPT-4o intelligence to parse complex resumes and rank candidates against technical benchmarks.
+                Secure, automated, and integrated directly with Supabase.
+            </p>
+        </div>
+
+        <!-- Upload Container Card -->
+        <div
+            class="glass-card bg-zinc-950/50 border border-zinc-800/80 rounded-2xl overflow-hidden shadow-2xl backdrop-blur-xl">
+            <!-- Dropzone Area -->
+            <div id="drop-area"
+                class="upload-area transition-all duration-300 p-16 flex flex-col items-center justify-center border-2 border-dashed border-zinc-800 hover:border-blue-500/50 m-4 rounded-xl cursor-pointer bg-zinc-900/20 hover:bg-zinc-900/40">
+                <input type="file" id="fileInput" class="hidden" accept=".pdf">
+                <div
+                    class="w-14 h-14 bg-zinc-900 rounded-xl flex items-center justify-center mb-6 border border-zinc-800 shadow-xl">
+                    <i data-lucide="cloud-lightning" class="text-blue-500 w-7 h-7"></i>
+                </div>
+                <h3 class="text-white font-semibold text-xl mb-2">Upload Candidate Credentials</h3>
+                <p class="text-zinc-500 text-sm font-medium">Drop PDF resume here or browse files</p>
+                <div class="mt-4 flex gap-2">
+                    <span
+                        class="text-[10px] bg-zinc-900 px-2 py-1 rounded border border-zinc-800 font-mono text-zinc-400">OCR
+                        Enabled</span>
+                    <span
+                        class="text-[10px] bg-zinc-900 px-2 py-1 rounded border border-zinc-800 font-mono text-zinc-400">PDF
+                        v1.7+</span>
+                </div>
+            </div>
+
+            <!-- Upload Status Bar & Controls -->
+            <div id="status" class="hidden p-8 border-t border-zinc-800 bg-zinc-900/20">
+                <div class="flex flex-col md:flex-row items-center justify-between gap-6">
+                    <div class="flex items-center gap-5">
+                        <div
+                            class="w-12 h-12 bg-blue-600/10 border border-blue-500/20 rounded-lg flex items-center justify-center">
+                            <i data-lucide="file-check" class="text-blue-400 w-6 h-6"></i>
+                        </div>
+                        <div>
+                            <p id="fileName"
+                                class="text-sm font-bold truncate max-w-[200px] tracking-tight italic text-blue-400">
+                                document_upload.pdf</p>
+                            <p id="fileSize" class="text-xs text-zinc-500 font-mono mt-1 uppercase">Ready for processing
+                            </p>
+                        </div>
+                    </div>
+
+                    <button id="uploadBtn"
+                        class="w-full md:w-auto bg-white hover:bg-zinc-200 text-black px-8 py-3 rounded-xl text-sm font-bold transition-all active:scale-95 flex items-center justify-center gap-3 shadow-lg">
+                        <span>Initialize AI Audit</span>
+                        <i data-lucide="sparkles" class="w-4 h-4"></i>
+                    </button>
+                </div>
+
+                <!-- Progress Bar -->
+                <div id="progressContainer" class="mt-8 hidden">
+                    <div
+                        class="flex justify-between text-[10px] uppercase tracking-[0.2em] font-bold mb-3 text-zinc-500">
+                        <span class="text-blue-500 animate-pulse">Syncing with LLM Cluster...</span>
+                        <span id="percentText">Processing</span>
+                    </div>
+                    <div class="h-1.5 w-full bg-zinc-800 rounded-full overflow-hidden">
+                        <div id="progressBar"
+                            class="h-full bg-gradient-to-r from-blue-600 to-blue-400 w-0 transition-all duration-700 ease-in-out">
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </div>
+
+        <!-- In-Page Webhook Result Dashboard -->
+        <div id="resultsContainer"
+            class="hidden mt-8 bg-zinc-950/60 border border-blue-500/30 rounded-2xl p-8 shadow-2xl backdrop-blur-xl space-y-6">
+            <div class="flex items-center justify-between border-b border-zinc-800 pb-4">
+                <div class="flex items-center gap-3">
+                    <div
+                        class="w-10 h-10 bg-emerald-500/20 border border-emerald-500/40 rounded-xl flex items-center justify-center">
+                        <i data-lucide="check-circle" class="text-emerald-400 w-5 h-5"></i>
+                    </div>
+                    <div>
+                        <h3 class="text-white font-bold text-lg">Audit Complete</h3>
+                        <p class="text-xs text-zinc-500 font-mono">Parsed via GPT-4o Pipeline</p>
+                    </div>
+                </div>
+                <button onclick="resetUI()" 
+    class="relative group overflow-hidden rounded-xl p-[1px] font-semibold text-xs transition-all duration-300 hover:scale-105 active:scale-95 shadow-lg shadow-rose-500/10 hover:shadow-rose-500/20">
+    <!-- Gradient Border effect -->
+    <span class="absolute inset-0 bg-gradient-to-r from-rose-500 via-zinc-700 to-rose-500 rounded-xl transition-all duration-500 group-hover:opacity-100 opacity-60"></span>
+    
+    <!-- Button Content Container -->
+    <span class="relative flex items-center gap-2 px-4 py-2.5 rounded-[11px] bg-zinc-950/90 text-zinc-300 group-hover:text-white transition-colors duration-300">
+        <i data-lucide="rotate-ccw" class="w-3.5 h-3.5 text-rose-400 group-hover:rotate-[-180deg] transition-transform duration-500"></i>
+        <span>Reset Audit</span>
+    </span>
+</button>
+            </div>
+
+            <!-- Match Score, Candidate Name, and Remarks Grid -->
+            <div class="grid grid-cols-1 md:grid-cols-4 gap-4">
+                <div class="bg-zinc-900/60 border border-zinc-800 p-4 rounded-xl">
+                    <span class="text-[10px] text-zinc-500 uppercase tracking-widest font-bold block mb-1">Match
+                        Score</span>
+                    <p id="resScore" class="text-3xl font-extrabold text-blue-400">--</p>
+                </div>
+
+                <div class="bg-zinc-900/60 border border-zinc-800 p-4 rounded-xl col-span-2">
+                    <span class="text-[10px] text-zinc-500 uppercase tracking-widest font-bold block mb-1">Candidate
+                        Name</span>
+                    <p id="resName" class="text-lg font-bold text-white">--</p>
+                </div>
+
+                <!-- Remarks Box (Selected / Rejected) -->
+                <div class="bg-zinc-900/60 border border-zinc-800 p-4 rounded-xl flex flex-col justify-center">
+                    <span
+                        class="text-[10px] text-zinc-500 uppercase tracking-widest font-bold block mb-1">Remarks</span>
+                    <span id="resStatus"
+                        class="text-xs font-bold px-3 py-1.5 rounded-lg border w-max uppercase tracking-wider">--</span>
+                </div>
+            </div>
+
+            <!-- Executive Summary -->
+            <div class="bg-zinc-900/60 border border-zinc-800 p-5 rounded-xl space-y-2">
+                <span class="text-[10px] text-zinc-500 uppercase tracking-widest font-bold block">Executive
+                    Summary</span>
+                <p id="resSummary" class="text-sm text-zinc-300 leading-relaxed">--</p>
+            </div>
+
+            <!-- Dynamic Skills Badges -->
+            <div class="bg-zinc-900/60 border border-zinc-800 p-5 rounded-xl space-y-3">
+                <span class="text-[10px] text-zinc-500 uppercase tracking-widest font-bold block mb-2">Identified Core
+                    Competencies</span>
+                <div id="resSkills" class="flex flex-wrap gap-2 items-center">
+                    <!-- Dynamic badges rendered via JavaScript -->
+                </div>
+            </div>
+        </div>
+
+        <!-- Infrastructure Status Indicators -->
+        <div class="mt-10 flex flex-wrap items-center justify-center md:justify-start gap-10 px-4">
+            <div class="flex items-center gap-3">
+                <div class="w-2 h-2 rounded-full bg-emerald-500 animate-pulse"></div>
+                <span class="text-[11px] font-bold tracking-widest text-zinc-500 uppercase">n8n Node: Online</span>
+            </div>
+            <div class="flex items-center gap-3">
+                <div class="w-2 h-2 rounded-full bg-emerald-500 animate-pulse"></div>
+                <span class="text-[11px] font-bold tracking-widest text-zinc-500 uppercase">Supabase DB: Active</span>
+            </div>
+            <div class="flex items-center gap-3">
+                <div class="w-2 h-2 rounded-full bg-blue-500"></div>
+                <span class="text-[11px] font-bold tracking-widest text-zinc-500 uppercase">Engine: GPT-4o</span>
+            </div>
+        </div>
+    </main>
+
+    <script src="./script.js"></script>
+</body>
+
+</html>

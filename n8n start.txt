@@ -1,0 +1,2 @@
+set N8N_CORS_ORIGIN=*
+n8n start
