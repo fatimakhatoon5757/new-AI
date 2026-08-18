@@ -1,9 +1,0 @@
-module.exports = function transformWebhook(json) {
-  return {
-    candidateName: json.name,
-    score: json.score,
-    summary: json.summary,
-    skills: typeof json.skills === 'string' ? JSON.parse(json.skills) : json.skills,
-    status: json.score >= 70 ? "Selected" : "Rejected"
-  };
-};
