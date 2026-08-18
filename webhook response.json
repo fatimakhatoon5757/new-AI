@@ -1,11 +1,9 @@
 
 
-{{ 
 {
-  "candidateName": $json.name,
-  "score": $json.score,
-  "summary": $json.summary,
-  "skills": typeof $json.skills === 'string' ? JSON.parse($json.skills) : $json.skills,
-  "status": $json.score >= 70 ? "Selected" : "Rejected"
+  "candidateName": "John Doe",
+  "score": 85,
+  "summary": "Strong technical skills",
+  "skills": ["JavaScript", "Node.js", "React"],
+  "status": "Selected"
 }
-}}
