@@ -70,7 +70,7 @@ uploadBtn.onclick = async () => {
     setTimeout(() => { progressBar.style.width = '75%'; }, 100);
 
     try {
-        const response = await fetch('http://localhost:5678/webhook-test/50f24481-550e-4ba5-8d31-eb1042de4789', {
+        const response = await fetch('http://localhost:5678/webhook-test/b62e3acf-7613-469f-a4c5-6eca3635b4ef', {
             method: 'POST',
             body: formData
         });
